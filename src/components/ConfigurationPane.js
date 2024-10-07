@@ -1,3 +1,4 @@
+// src/components/ConfigurationPane.js
 import React from "react";
 
 const ConfigurationPane = ({ selectedItem, updateItem }) => {
@@ -9,43 +10,40 @@ const ConfigurationPane = ({ selectedItem, updateItem }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    updateItem(selectedItem.id, { [name]: value });
+    updateItem({
+      ...selectedItem,
+      props: {
+        ...selectedItem.props,
+        [name]: value,
+      },
+    });
   };
 
   return (
     <div className="configuration-pane">
       <h4>Customize {selectedItem.type}</h4>
-      // ConfigurationPane.js
       {selectedItem.type === "text" && (
         <div>
           <label>Text Content:</label>
           <input
             type="text"
             name="content"
-            value={selectedItem.content || ""}
+            value={selectedItem.props.content || ""}
             onChange={handleChange}
           />
           <label>Font Size:</label>
           <input
             type="number"
             name="fontSize"
-            value={selectedItem.style?.fontSize || 16}
-            onChange={(e) =>
-              updateItem(selectedItem.id, {
-                style: { ...selectedItem.style, fontSize: e.target.value },
-              })
-            }
+            value={selectedItem.props.fontSize || 16}
+            onChange={handleChange}
           />
           <label>Color:</label>
           <input
             type="color"
             name="color"
-            value={selectedItem.style?.color || "#000000"}
-            onChange={(e) =>
-              updateItem(selectedItem.id, {
-                style: { ...selectedItem.style, color: e.target.value },
-              })
-            }
+            value={selectedItem.props.color || "#000000"}
+            onChange={handleChange}
           />
         </div>
       )}
@@ -54,16 +52,13 @@ const ConfigurationPane = ({ selectedItem, updateItem }) => {
           <label>Entry Type:</label>
           <select
             name="entryType"
-            value={selectedItem.entryType}
-            onChange={(e) =>
-              updateItem(selectedItem.id, { entryType: e.target.value })
-            }
+            value={selectedItem.props.entryType}
+            onChange={handleChange}
           >
             <option value="facebook">Facebook</option>
             <option value="twitter">Twitter</option>
             {/* Add more options */}
           </select>
-          {/* Additional configuration fields */}
         </div>
       )}
       {selectedItem.type === "counter" && (
@@ -73,12 +68,19 @@ const ConfigurationPane = ({ selectedItem, updateItem }) => {
             type="datetime-local"
             name="endDate"
             value={
-              selectedItem.endDate
-                ? new Date(selectedItem.endDate).toISOString().slice(0, -1)
+              selectedItem.props.endDate
+                ? new Date(parseInt(selectedItem.props.endDate))
+                    .toISOString()
+                    .slice(0, -1)
                 : ""
             }
             onChange={(e) =>
-              updateItem(selectedItem.id, { endDate: new Date(e.target.value) })
+              handleChange({
+                target: {
+                  name: "endDate",
+                  value: new Date(e.target.value).getTime(),
+                },
+              })
             }
           />
         </div>
@@ -89,36 +91,11 @@ const ConfigurationPane = ({ selectedItem, updateItem }) => {
           <input
             type="text"
             name="src"
-            value={selectedItem.src || ""}
-            onChange={(e) =>
-              updateItem(selectedItem.id, { src: e.target.value })
-            }
-          />
-          <label>Width:</label>
-          <input
-            type="number"
-            name="width"
-            value={selectedItem.style?.width || 100}
-            onChange={(e) =>
-              updateItem(selectedItem.id, {
-                style: { ...selectedItem.style, width: e.target.value + "px" },
-              })
-            }
-          />
-          <label>Height:</label>
-          <input
-            type="number"
-            name="height"
-            value={selectedItem.style?.height || 100}
-            onChange={(e) =>
-              updateItem(selectedItem.id, {
-                style: { ...selectedItem.style, height: e.target.value + "px" },
-              })
-            }
+            value={selectedItem.props.src || ""}
+            onChange={handleChange}
           />
         </div>
       )}
-      {/* Similarly for other types */}
     </div>
   );
 };

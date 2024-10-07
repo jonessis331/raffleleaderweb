@@ -1,44 +1,36 @@
+// src/components/CounterDraggable.js
 import React, { useState, useEffect } from "react";
 
 const CounterDraggable = ({ endDate }) => {
-  const calculateTimeLeft = () => {
-    const difference = +new Date(endDate) - +new Date();
-    let timeLeft = {};
+  const [timeLeft, setTimeLeft] = useState("");
 
-    if (difference > 0) {
-      timeLeft = {
-        Days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        Hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        Minutes: Math.floor((difference / 1000 / 60) % 60),
-        Seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
-
-    return timeLeft;
-  };
-
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-    return () => clearTimeout(timer);
-  });
+    const calculateTimeLeft = () => {
+      const difference = endDate - Date.now();
+      if (difference > 0) {
+        const timeLeft = {
+          Days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          Hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          Minutes: Math.floor((difference / (1000 * 60)) % 60),
+          Seconds: Math.floor((difference / 1000) % 60),
+        };
+        setTimeLeft(
+          Object.entries(timeLeft)
+            .map(([unit, value]) => `${value} ${unit}`)
+            .join(" ")
+        );
+      } else {
+        setTimeLeft("Time's up!");
+      }
+    };
 
-  const timerDraggables = [];
-  Object.keys(timeLeft).forEach((interval) => {
-    timerDraggables.push(
-      <span key={interval}>
-        {timeLeft[interval]} {interval}{" "}
-      </span>
-    );
-  });
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
-  return (
-    <div>
-      {timerDraggables.length ? timerDraggables : <span>Time's up!</span>}
-    </div>
-  );
+    return () => clearInterval(timer);
+  }, [endDate]);
+
+  return <div>{timeLeft}</div>;
 };
 
 export default CounterDraggable;
