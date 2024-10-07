@@ -2,11 +2,16 @@ import React from "react";
 import "../styles/RafflePreview.css";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
-const RafflePreview = ({ raffleItems }) => {
+const RafflePreview = ({
+  raffleItems,
+  setSelectedItem,
+  raffleWidth,
+  backgroundColor,
+}) => {
   return (
     <div
       className="raffle-preview"
-      style={{ width: "500px", margin: "0 auto" }}
+      style={{ width: raffleWidth, backgroundColor }}
     >
       <h4>Raffle Preview</h4>
       <Droppable droppableId="rafflePreview">
@@ -24,6 +29,7 @@ const RafflePreview = ({ raffleItems }) => {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    onClick={() => setSelectedItem(item)}
                   >
                     {item.type === "text" && (
                       <div>Text Component Placeholder</div>

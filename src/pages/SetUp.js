@@ -4,9 +4,20 @@ import RafflePreview from "../components/RafflePreview";
 import CustomizationToolbar from "../components/CustomizationToolbar";
 import { DragDropContext } from "react-beautiful-dnd";
 import "../styles/SetUp.css";
+import ConfigurationPane from "../components/ConfigurationPane";
 
 const SetUp = () => {
   const [raffleItems, setRaffleItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const [raffleWidth, setRaffleWidth] = useState(500);
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+
+  const updateItem = (id, changes) => {
+    setRaffleItems((prevItems) =>
+      prevItems.map((item) => (item.id === id ? { ...item, ...changes } : item))
+    );
+  };
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
@@ -50,8 +61,22 @@ const SetUp = () => {
       <Navbar />
       <div className="setup-container">
         <DragDropContext onDragEnd={onDragEnd}>
-          <CustomizationToolbar />
-          <RafflePreview raffleItems={raffleItems} />
+          <CustomizationToolbar
+            onBackgroundColorChange={(color) => setBackgroundColor(color.hex)}
+            onRaffleSizeChange={(size) => setRaffleWidth(size)}
+            // ... other handlers
+          />
+          <RafflePreview
+            raffleItems={raffleItems}
+            setSelectedItem={setSelectedItem}
+            raffleWidth={raffleWidth}
+            backgroundColor={backgroundColor}
+            // ... other props
+          />
+          <ConfigurationPane
+            selectedItem={selectedItem}
+            updateItem={updateItem}
+          />
         </DragDropContext>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import "../styles/CustomizationToolbar.css";
-
+import { SketchPicker } from "react-color";
 const draggableItems = [
   { id: "text", label: "Text", icon: "/text.png" },
   { id: "entry", label: "Entry", icon: "/entry.png" },
@@ -9,7 +9,20 @@ const draggableItems = [
   { id: "image", label: "Image", icon: "/image.png" },
 ];
 
-const CustomizationToolbar = () => {
+const CustomizationToolbar = ({
+  onBackgroundColorChange,
+  onFooterTextColorChange,
+  onFooterBackgroundColorChange,
+  onRaffleSizeChange,
+}) => {
+  const [raffleWidth, setRaffleWidth] = useState(500);
+
+  const handleSizeChange = (e) => {
+    const newSize = e.target.value;
+    setRaffleWidth(newSize);
+    onRaffleSizeChange(newSize);
+  };
+
   return (
     <div className="customization-toolbar">
       <h4>Customization Toolbar</h4>
@@ -39,6 +52,21 @@ const CustomizationToolbar = () => {
           </div>
         )}
       </Droppable>
+
+      <div>
+        <label>Raffle Width:</label>
+        <input
+          type="number"
+          value={raffleWidth}
+          onChange={handleSizeChange}
+          min="300"
+          max="800"
+        />
+      </div>
+      <div>
+        <label>Background Color:</label>
+        <SketchPicker onChangeComplete={onBackgroundColorChange} />
+      </div>
     </div>
   );
 };

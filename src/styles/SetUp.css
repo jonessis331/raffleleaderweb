@@ -4,10 +4,11 @@
   padding: 1rem;
 }
 
-.customization-toolbar {
-  width: 25%;
+.customization-toolbar,
+.configuration-pane {
+  width: 20%;
 }
 
 .raffle-preview {
-  width: 70%;
+  width: 55%;
 }
