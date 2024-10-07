@@ -1,6 +1,11 @@
+// RafflePreview.js
 import React from "react";
 import "../styles/RafflePreview.css";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import TextDraggable from "./TextDraggable";
+import EntryDraggable from "./EntryDraggable";
+import CounterDraggable from "./CounterDraggable";
+import ImageDraggable from "./ImageDraggable";
 
 const RafflePreview = ({
   raffleItems,
@@ -11,7 +16,7 @@ const RafflePreview = ({
   return (
     <div
       className="raffle-preview"
-      style={{ width: raffleWidth, backgroundColor }}
+      style={{ width: `${raffleWidth}px`, backgroundColor }}
     >
       <h4>Raffle Preview</h4>
       <Droppable droppableId="rafflePreview">
@@ -32,16 +37,22 @@ const RafflePreview = ({
                     onClick={() => setSelectedItem(item)}
                   >
                     {item.type === "text" && (
-                      <div>Text Component Placeholder</div>
+                      <TextDraggable
+                        content={item.content}
+                        style={item.style}
+                      />
                     )}
                     {item.type === "entry" && (
-                      <div>Entry Component Placeholder</div>
+                      <EntryDraggable
+                        entryType={item.entryType}
+                        props={item.props}
+                      />
                     )}
                     {item.type === "counter" && (
-                      <div>Counter Component Placeholder</div>
+                      <CounterDraggable endDate={item.endDate} />
                     )}
                     {item.type === "image" && (
-                      <div>Image Component Placeholder</div>
+                      <ImageDraggable src={item.src} style={item.style} />
                     )}
                   </div>
                 )}

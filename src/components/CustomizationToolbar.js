@@ -3,23 +3,25 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import "../styles/CustomizationToolbar.css";
 import { SketchPicker } from "react-color";
 const draggableItems = [
-  { id: "text", label: "Text", icon: "/text.png" },
-  { id: "entry", label: "Entry", icon: "/entry.png" },
-  { id: "counter", label: "Counter", icon: "/counter.png" },
-  { id: "image", label: "Image", icon: "/image.png" },
+  { id: "text", label: "Text", icon: "images/text.png" },
+  { id: "entry", label: "Entry", icon: "images/entry.png" },
+  { id: "counter", label: "Counter", icon: "images/counter.png" },
+  { id: "image", label: "Image", icon: "images/image.png" },
 ];
 
 const CustomizationToolbar = ({
   onBackgroundColorChange,
+  raffleWidth,
   onFooterTextColorChange,
   onFooterBackgroundColorChange,
   onRaffleSizeChange,
 }) => {
-  const [raffleWidth, setRaffleWidth] = useState(500);
+  //const [raffleWidth, setRaffleWidth] = useState(500);
 
   const handleSizeChange = (e) => {
     const newSize = e.target.value;
-    setRaffleWidth(newSize);
+    //setRaffleWidth(newSize);
+    console.log(newSize);
     onRaffleSizeChange(newSize);
   };
 
