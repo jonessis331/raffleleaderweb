@@ -15,10 +15,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" render={() => <Navigate to="/templates" />} />
-        <Route path="/templates" component={Templates} />
-        <Route path="/setup" component={SetUp} />
-        <Route path="/publish" component={Publish} />
+        <Route exact path="/" element={() => <Navigate to="/templates" />} />
+        <Route path="/templates" element={<Templates />} />
+        <Route path="/setup" element={<SetUp />} />
+        <Route path="/publish" element={<Publish />} />
       </Routes>
     </Router>
   );

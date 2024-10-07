@@ -1,4 +1,13 @@
 .setup-container {
   display: flex;
-  padding: 2rem;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.customization-toolbar {
+  width: 25%;
+}
+
+.raffle-preview {
+  width: 70%;
 }
