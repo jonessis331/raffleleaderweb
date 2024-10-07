@@ -1,0 +1,16 @@
+.publish-options {
+  display: flex;
+  justify-content: space-around;
+  margin: 2rem;
+}
+
+.publish-options div {
+  padding: 2rem;
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+.publish-options div:hover {
+  background-color: #f0f0f0;
+}

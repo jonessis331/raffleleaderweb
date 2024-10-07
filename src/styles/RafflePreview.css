@@ -1,0 +1,12 @@
+.raffle-preview {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 2rem;
+  background-color: #fefefe;
+}
+
+.preview-content {
+  min-height: 200px;
+  border: 1px dashed #ccc;
+  padding: 1rem;
+}

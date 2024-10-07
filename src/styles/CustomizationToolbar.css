@@ -1,0 +1,11 @@
+.customization-toolbar {
+  padding: 1rem;
+  background-color: #f1f1f1;
+  margin-right: 2rem;
+}
+
+.toolbar-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
