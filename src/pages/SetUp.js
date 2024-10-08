@@ -20,6 +20,37 @@ const SetUp = () => {
     setSelectedItem(updatedItem);
   };
 
+  // Bring Forward and Send Backward functions remain the same
+  const bringForward = (id) => {
+    setItems((prevItems) => {
+      const index = prevItems.findIndex((item) => item.id === id);
+      if (index < prevItems.length - 1) {
+        const newItems = [...prevItems];
+        [newItems[index], newItems[index + 1]] = [
+          newItems[index + 1],
+          newItems[index],
+        ];
+        return newItems;
+      }
+      return prevItems;
+    });
+  };
+
+  const sendBackward = (id) => {
+    setItems((prevItems) => {
+      const index = prevItems.findIndex((item) => item.id === id);
+      if (index > 0) {
+        const newItems = [...prevItems];
+        [newItems[index], newItems[index - 1]] = [
+          newItems[index - 1],
+          newItems[index],
+        ];
+        return newItems;
+      }
+      return prevItems;
+    });
+  };
+
   return (
     <div>
       <Navbar />
@@ -33,12 +64,15 @@ const SetUp = () => {
           items={items}
           setItems={setItems}
           setSelectedItem={setSelectedItem}
+          selectedItem={selectedItem}
           raffleWidth={raffleWidth}
           backgroundColor={backgroundColor}
         />
         <ConfigurationPane
           selectedItem={selectedItem}
           updateItem={updateItem}
+          bringForward={bringForward}
+          sendBackward={sendBackward}
         />
       </div>
     </div>

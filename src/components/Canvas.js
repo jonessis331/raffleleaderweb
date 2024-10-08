@@ -8,6 +8,7 @@ const Canvas = ({
   items,
   setItems,
   setSelectedItem,
+  selectedItem,
   raffleWidth,
   backgroundColor,
 }) => {
@@ -28,6 +29,7 @@ const Canvas = ({
         y,
         width: 100,
         height: 100,
+        zIndex: items.length, // New items are on top
         props: getDefaultProps(item.type),
       };
 
@@ -52,6 +54,7 @@ const Canvas = ({
           item={item}
           setItems={setItems}
           setSelectedItem={setSelectedItem}
+          isSelected={selectedItem?.id === item.id}
         />
       ))}
     </div>
@@ -61,7 +64,20 @@ const Canvas = ({
 const getDefaultProps = (type) => {
   switch (type) {
     case "text":
-      return { content: "Sample Text", fontSize: "16", color: "#000000" };
+      return {
+        content: "Sample Text",
+        fontSize: 16,
+        color: "#000000",
+        fontWeight: "normal",
+        fontStyle: "normal",
+        textDecoration: "",
+        fontFamily: "Arial",
+        letterSpacing: 0,
+        lineHeight: 20,
+        textAlign: "left",
+        verticalAlign: "top",
+        textOrientation: "horizontal", // Default orientation
+      };
     case "entry":
       return { entryType: "facebook" };
     case "counter":

@@ -1,11 +1,14 @@
 .customization-toolbar {
+  /* display: flex;
+  flex-direction: row; */
   padding: 1rem;
+
   background-color: #f1f1f1;
   margin-right: 2rem;
 }
 
 .toolbar-options {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
 }

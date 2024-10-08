@@ -3,7 +3,7 @@ import React from "react";
 import { Rnd } from "react-rnd";
 import CounterDraggable from "./CounterDraggable";
 
-const CanvasItem = ({ item, setItems, setSelectedItem }) => {
+const CanvasItem = ({ item, setItems, setSelectedItem, isSelected }) => {
   const { id, type, x, y, width, height, props } = item;
 
   const onDragStop = (e, d) => {
@@ -37,7 +37,8 @@ const CanvasItem = ({ item, setItems, setSelectedItem }) => {
       bounds="parent"
       onClick={() => setSelectedItem(item)}
       style={{
-        border: item.isSelected ? "2px solid blue" : "none",
+        border: isSelected ? "2px dashed blue" : "none",
+        zIndex: item.zIndex || 0,
       }}
     >
       {renderComponent(item)}
@@ -47,20 +48,58 @@ const CanvasItem = ({ item, setItems, setSelectedItem }) => {
 
 const renderComponent = (item) => {
   const { type, props } = item;
+
   switch (type) {
     case "text":
-      return (
-        <div
-          style={{
-            fontSize: `${props.fontSize}px`,
-            color: props.color,
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {props.content}
-        </div>
-      );
+      const isVertical = props.textOrientation === "vertical";
+
+      const textContent = isVertical
+        ? props.content.split("").map((char, index) => (
+            <span key={index} style={{ display: "block" }}>
+              {char}
+            </span>
+          ))
+        : props.content;
+
+      const textAlignMap = {
+        left: "flex-start",
+        center: "center",
+        right: "flex-end",
+      };
+
+      const verticalAlignMap = {
+        top: "flex-start",
+        middle: "center",
+        bottom: "flex-end",
+      };
+
+      const style = {
+        fontSize: `${props.fontSize}px`,
+        color: props.color,
+        fontWeight: props.fontWeight,
+        fontStyle: props.fontStyle,
+        textDecoration: props.textDecoration,
+        fontFamily: props.fontFamily,
+        letterSpacing: `${props.letterSpacing}px`,
+        lineHeight: `${props.lineHeight}px`,
+        textAlign: props.textAlign,
+        display: "flex",
+        flexDirection: isVertical ? "column" : "row",
+        alignItems: isVertical
+          ? textAlignMap[props.textAlign] || "flex-start"
+          : verticalAlignMap[props.verticalAlign] || "flex-start",
+        justifyContent: isVertical
+          ? verticalAlignMap[props.verticalAlign] || "flex-start"
+          : textAlignMap[props.textAlign] || "flex-start",
+        width: "100%",
+        height: "100%",
+        wordBreak: "break-word",
+        overflowWrap: "break-word",
+        whiteSpace: "pre-wrap",
+      };
+
+      return <div style={style}>{textContent}</div>;
+
     case "entry":
       return (
         <div style={{ width: "100%", height: "100%" }}>
