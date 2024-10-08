@@ -1,7 +1,9 @@
 // src/components/CustomizationToolbar.js
-import React from "react";
+import React, { useState } from "react";
 import ToolbarItem from "./ToolbarItem";
 import "../styles/CustomizationToolbar.css";
+import RulesPane from "./RulesPane";
+import DateTimePane from "./DateTimePane";
 import { SketchPicker } from "react-color";
 
 const draggableItems = [
@@ -17,10 +19,24 @@ const CustomizationToolbar = ({
   onRaffleSizeChange,
   undo,
   redo,
+  rulesText,
+  setRulesText,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  timeZone,
+  setTimeZone,
 }) => {
+  const [showRulesPane, setShowRulesPane] = useState(false);
+  const [showDateTimePane, setShowDateTimePane] = useState(false);
+
   const handleSizeChange = (e) => {
     const newSize = e.target.value;
     onRaffleSizeChange(newSize);
+  };
+  const handleColorChange = (e) => {
+    onBackgroundColorChange({ hex: e.target.value });
   };
 
   return (
@@ -44,10 +60,30 @@ const CustomizationToolbar = ({
       </div>
       <div>
         <label>Background Color:</label>
-        <SketchPicker onChangeComplete={onBackgroundColorChange} />
+        <input type="color" onChange={handleColorChange} />
       </div>
       <button onClick={undo}>Undo</button>
       <button onClick={redo}>Redo</button>
+      <button onClick={() => setShowRulesPane(true)}>Rules</button>
+      <button onClick={() => setShowDateTimePane(true)}>Date/Time</button>
+      {showRulesPane && (
+        <RulesPane
+          onClose={() => setShowRulesPane(false)}
+          rulesText={rulesText}
+          setRulesText={setRulesText}
+        />
+      )}
+      {showDateTimePane && (
+        <DateTimePane
+          onClose={() => setShowDateTimePane(false)}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          timeZone={timeZone}
+          setTimeZone={setTimeZone}
+        />
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 // src/pages/SetUp.js
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import CustomizationToolbar from "../components/CustomizationToolbar";
 import Canvas from "../components/Canvas";
@@ -13,6 +13,10 @@ const SetUp = () => {
 
   const [raffleWidth, setRaffleWidth] = useState(500);
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [rulesText, setRulesText] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [timeZone, setTimeZone] = useState("UTC");
 
   // Undo/Redo history stacks
   const undoStack = useRef([]);
@@ -53,6 +57,20 @@ const SetUp = () => {
     updateItems(items.filter((item) => item.id !== id));
     setSelectedItem(null);
   };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Delete" && selectedItem) {
+        // Show confirmation modal
+        // Assuming you have a function to handle this
+        deleteItem(selectedItem.id);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedItem]);
 
   // Bring Forward and Send Backward functions remain the same
   const bringForward = (id) => {
@@ -94,6 +112,14 @@ const SetUp = () => {
         onRaffleSizeChange={(size) => setRaffleWidth(size)}
         undo={undo}
         redo={redo}
+        rulesText={rulesText}
+        setRulesText={setRulesText}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        timeZone={timeZone}
+        setTimeZone={setTimeZone}
       />
       <div className="setup-container">
         <LayersPane

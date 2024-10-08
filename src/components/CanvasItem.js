@@ -37,11 +37,24 @@ const CanvasItem = ({ item, setItems, setSelectedItem, isSelected }) => {
       bounds="parent"
       onClick={() => setSelectedItem(item)}
       style={{
-        border: isSelected ? "2px dashed blue" : "none",
+        //border: isSelected ? "2px dashed blue" : "none",
         zIndex: item.zIndex || 0,
       }}
     >
-      {renderComponent(item)}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          boxSizing: "border-box",
+          border: isSelected ? "2px dashed blue" : "none",
+          borderRadius: `${props.borderRadius || 0}px`,
+          overflow: "hidden", // Ensure content respects the border radius
+          pointerEvents: "auto",
+        }}
+      >
+        {renderComponent(item)}
+      </div>
     </Rnd>
   );
 };
@@ -107,7 +120,7 @@ const renderComponent = (item) => {
         </div>
       );
     case "counter":
-      return <CounterDraggable endDate={props.endDate} />;
+      return <CounterDraggable endDate={props.endDate} props={props} />;
     case "image":
       return (
         <img
@@ -116,6 +129,7 @@ const renderComponent = (item) => {
           style={{
             width: "100%",
             height: "100%",
+            boxSizing: "border-box",
             borderStyle: "solid",
             borderColor: props.borderColor || "#000",
             borderTopWidth: `${props.borderTopWidth || 0}px`,
@@ -126,6 +140,7 @@ const renderComponent = (item) => {
             borderTopRightRadius: `${props.borderTopRightRadius || 0}px`,
             borderBottomRightRadius: `${props.borderBottomRightRadius || 0}px`,
             borderBottomLeftRadius: `${props.borderBottomLeftRadius || 0}px`,
+            objectFit: "cover",
           }}
         />
       );
