@@ -384,7 +384,7 @@ const ConfigurationPane = ({
                 })
               }
             >
-              <img src="icons/align-left.png" alt="Left Align" />
+              <img src="/assets/images/left-text-align.png" alt="Left Align" />
             </button>
             <button
               className={
@@ -396,7 +396,10 @@ const ConfigurationPane = ({
                 })
               }
             >
-              <img src="icons/align-center.png" alt="Center Align" />
+              <img
+                src="/assets/images/center-text-align.png"
+                alt="Center Align"
+              />
             </button>
             <button
               className={
@@ -408,7 +411,10 @@ const ConfigurationPane = ({
                 })
               }
             >
-              <img src="icons/align-right.png" alt="Right Align" />
+              <img
+                src="/assets/images/right-text-align.png"
+                alt="Right Align"
+              />
             </button>
           </div>
 

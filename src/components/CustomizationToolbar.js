@@ -7,10 +7,14 @@ import DateTimePane from "./DateTimePane";
 import { SketchPicker } from "react-color";
 
 const draggableItems = [
-  { type: "text", label: "Text", icon: "images/text.png" },
-  { type: "entry", label: "Entry", icon: "images/entry.png" },
-  { type: "counter", label: "Counter", icon: "images/counter.png" },
-  { type: "image", label: "Image", icon: "images/image.png" },
+  { type: "text", label: "Text", icon: "/assets/images/text_toolbar.png" },
+  { type: "image", label: "Image", icon: "/assets/images/image_toolbar.png" },
+  {
+    type: "counter",
+    label: "Counter",
+    icon: "/assets/images/counter_toolbar.png",
+  },
+  { type: "entry", label: "Entry", icon: "/assets/images/entry_toolbar.png" },
 ];
 
 const CustomizationToolbar = ({
@@ -62,10 +66,18 @@ const CustomizationToolbar = ({
         <label>Background Color:</label>
         <input type="color" onChange={handleColorChange} />
       </div>
-      <button onClick={undo}>Undo</button>
-      <button onClick={redo}>Redo</button>
-      <button onClick={() => setShowRulesPane(true)}>Rules</button>
-      <button onClick={() => setShowDateTimePane(true)}>Date/Time</button>
+      <button onClick={undo}>
+        <img src="/assets/images/undo.png" alt="Undo" />
+      </button>
+      <button onClick={redo}>
+        <img src="/assets/images/redo.png" alt="Redo" />
+      </button>
+      <button onClick={() => setShowRulesPane(true)}>
+        <img src="/assets/images/rules_toolbar.png" alt="Rules" />
+      </button>
+      <button onClick={() => setShowDateTimePane(true)}>
+        <img src="/assets/images/settings_toolbar.png" alt="Date/Time" />
+      </button>
       {showRulesPane && (
         <RulesPane
           onClose={() => setShowRulesPane(false)}

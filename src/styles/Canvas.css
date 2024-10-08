@@ -1,6 +1,7 @@
 /* src/styles/Canvas.css */
 .canvas {
   position: relative;
+  box-shadow: 10px, black;
 }
 
 .draggable-item {
