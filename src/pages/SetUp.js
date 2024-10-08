@@ -1,9 +1,10 @@
 // src/pages/SetUp.js
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import CustomizationToolbar from "../components/CustomizationToolbar";
 import Canvas from "../components/Canvas";
 import ConfigurationPane from "../components/ConfigurationPane";
+import LayersPane from "../components/LayersPane";
 import "../styles/SetUp.css";
 
 const SetUp = () => {
@@ -13,11 +14,44 @@ const SetUp = () => {
   const [raffleWidth, setRaffleWidth] = useState(500);
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
 
+  // Undo/Redo history stacks
+  const undoStack = useRef([]);
+  const redoStack = useRef([]);
+
+  const updateItems = (newItems) => {
+    undoStack.current.push(items);
+    setItems(newItems);
+    redoStack.current = []; // Clear redo stack
+  };
+
+  const undo = () => {
+    if (undoStack.current.length > 0) {
+      const previousItems = undoStack.current.pop();
+      redoStack.current.push(items);
+      setItems(previousItems);
+      setSelectedItem(null);
+    }
+  };
+
+  const redo = () => {
+    if (redoStack.current.length > 0) {
+      const nextItems = redoStack.current.pop();
+      undoStack.current.push(items);
+      setItems(nextItems);
+      setSelectedItem(null);
+    }
+  };
+
   const updateItem = (updatedItem) => {
-    setItems((prevItems) =>
-      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+    updateItems(
+      items.map((item) => (item.id === updatedItem.id ? updatedItem : item))
     );
     setSelectedItem(updatedItem);
+  };
+
+  const deleteItem = (id) => {
+    updateItems(items.filter((item) => item.id !== id));
+    setSelectedItem(null);
   };
 
   // Bring Forward and Send Backward functions remain the same
@@ -54,11 +88,18 @@ const SetUp = () => {
   return (
     <div>
       <Navbar />
+      <CustomizationToolbar
+        raffleWidth={raffleWidth}
+        onBackgroundColorChange={(color) => setBackgroundColor(color.hex)}
+        onRaffleSizeChange={(size) => setRaffleWidth(size)}
+        undo={undo}
+        redo={redo}
+      />
       <div className="setup-container">
-        <CustomizationToolbar
-          raffleWidth={raffleWidth}
-          onBackgroundColorChange={(color) => setBackgroundColor(color.hex)}
-          onRaffleSizeChange={(size) => setRaffleWidth(size)}
+        <LayersPane
+          items={items}
+          setSelectedItem={setSelectedItem}
+          selectedItem={selectedItem}
         />
         <Canvas
           items={items}
@@ -67,12 +108,14 @@ const SetUp = () => {
           selectedItem={selectedItem}
           raffleWidth={raffleWidth}
           backgroundColor={backgroundColor}
+          deleteItem={deleteItem}
         />
         <ConfigurationPane
           selectedItem={selectedItem}
           updateItem={updateItem}
           bringForward={bringForward}
           sendBackward={sendBackward}
+          deleteItem={deleteItem}
         />
       </div>
     </div>

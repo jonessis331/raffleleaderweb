@@ -5,14 +5,22 @@
   padding: 1rem;
 }
 
-.customization-toolbar,
-.configuration-pane {
-  width: 20%;
+.layers-pane {
+  width: 15%;
 }
 
 .canvas {
   width: 55%;
-  height: 600px;
-  position: relative;
-  border: 1px solid #ccc;
+  /* ... other styles ... */
+}
+
+.configuration-pane {
+  width: 25%;
+}
+
+/* Adjust the toolbar to be horizontal */
+.customization-toolbar {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
 }

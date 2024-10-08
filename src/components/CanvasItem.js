@@ -113,7 +113,20 @@ const renderComponent = (item) => {
         <img
           src={props.src}
           alt="User Uploaded"
-          style={{ width: "100%", height: "100%" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderStyle: "solid",
+            borderColor: props.borderColor || "#000",
+            borderTopWidth: `${props.borderTopWidth || 0}px`,
+            borderRightWidth: `${props.borderRightWidth || 0}px`,
+            borderBottomWidth: `${props.borderBottomWidth || 0}px`,
+            borderLeftWidth: `${props.borderLeftWidth || 0}px`,
+            borderTopLeftRadius: `${props.borderTopLeftRadius || 0}px`,
+            borderTopRightRadius: `${props.borderTopRightRadius || 0}px`,
+            borderBottomRightRadius: `${props.borderBottomRightRadius || 0}px`,
+            borderBottomLeftRadius: `${props.borderBottomLeftRadius || 0}px`,
+          }}
         />
       );
     default:

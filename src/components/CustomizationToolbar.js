@@ -15,6 +15,8 @@ const CustomizationToolbar = ({
   onBackgroundColorChange,
   raffleWidth,
   onRaffleSizeChange,
+  undo,
+  redo,
 }) => {
   const handleSizeChange = (e) => {
     const newSize = e.target.value;
@@ -44,6 +46,8 @@ const CustomizationToolbar = ({
         <label>Background Color:</label>
         <SketchPicker onChangeComplete={onBackgroundColorChange} />
       </div>
+      <button onClick={undo}>Undo</button>
+      <button onClick={redo}>Redo</button>
     </div>
   );
 };

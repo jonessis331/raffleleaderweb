@@ -1,0 +1,36 @@
+/* src/styles/LayersPane.css */
+
+.layers-pane {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-right: 1px solid #dee2e6;
+}
+
+.layers-pane h4 {
+  margin-bottom: 1rem;
+}
+
+.layers-pane ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.layers-pane li {
+  padding: 0.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.layers-pane li:last-child {
+  border-bottom: none;
+}
+
+.layers-pane li.active {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.layers-pane li:hover {
+  background-color: #e9ecef;
+}

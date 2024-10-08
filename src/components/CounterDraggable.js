@@ -1,12 +1,12 @@
 // src/components/CounterDraggable.js
 import React, { useState, useEffect } from "react";
 
-const CounterDraggable = ({ endDate }) => {
+const CounterDraggable = ({ endDate, props }) => {
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = endDate - Date.now();
+      const difference = new Date(endDate) - Date.now();
       if (difference > 0) {
         const timeLeft = {
           Days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -30,7 +30,31 @@ const CounterDraggable = ({ endDate }) => {
     return () => clearInterval(timer);
   }, [endDate]);
 
-  return <div>{timeLeft}</div>;
+  return (
+    <div
+      style={{
+        fontSize: `${props.fontSize}px`,
+        color: props.color,
+        fontWeight: props.fontWeight,
+        fontStyle: props.fontStyle,
+        textDecoration: props.textDecoration,
+        fontFamily: props.fontFamily,
+        letterSpacing: `${props.letterSpacing}px`,
+        lineHeight: `${props.lineHeight}px`,
+        textAlign: props.textAlign,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: props.textAlignMap?.[props.textAlign] || "flex-start",
+        width: "100%",
+        height: "100%",
+        wordBreak: "break-word",
+        overflowWrap: "break-word",
+        whiteSpace: "pre-wrap",
+      }}
+    >
+      {timeLeft}
+    </div>
+  );
 };
 
 export default CounterDraggable;

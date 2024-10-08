@@ -1,6 +1,8 @@
 // src/components/ConfigurationPane.js
-import React from "react";
+import React, { useState } from "react";
 import "../styles/ConfigurationPane.css";
+import ImageUploadModal from "./ImageUploadModal";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const fonts = [
   "Arial",
@@ -22,7 +24,11 @@ const ConfigurationPane = ({
   updateItem,
   bringForward,
   sendBackward,
+  deleteItem,
 }) => {
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   if (!selectedItem) {
     return (
       <div className="configuration-pane">Select an item to customize</div>
@@ -47,6 +53,150 @@ const ConfigurationPane = ({
   return (
     <div className="configuration-pane">
       <h4>Customize {selectedItem.type}</h4>
+      {selectedItem.type === "image" && (
+        <div className="image-configuration">
+          {/* Insert Image Button */}
+          <button onClick={() => setShowImageUpload(true)}>Insert Image</button>
+
+          {/* Image Upload Modal */}
+          {showImageUpload && (
+            <ImageUploadModal
+              onClose={() => setShowImageUpload(false)}
+              onImageSelect={(src) => {
+                handleChange({ target: { name: "src", value: src } });
+                setShowImageUpload(false);
+              }}
+            />
+          )}
+
+          {/* Border Color */}
+          <label>Border Color:</label>
+          <input
+            type="color"
+            name="borderColor"
+            value={selectedItem.props.borderColor || "#000000"}
+            onChange={handleChange}
+          />
+
+          {/* Border Width */}
+          <label>Border Width (px):</label>
+          <div className="border-width-inputs">
+            <label>
+              Top:
+              <input
+                type="number"
+                name="borderTopWidth"
+                value={selectedItem.props.borderTopWidth || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+            <label>
+              Right:
+              <input
+                type="number"
+                name="borderRightWidth"
+                value={selectedItem.props.borderRightWidth || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+            <label>
+              Bottom:
+              <input
+                type="number"
+                name="borderBottomWidth"
+                value={selectedItem.props.borderBottomWidth || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+            <label>
+              Left:
+              <input
+                type="number"
+                name="borderLeftWidth"
+                value={selectedItem.props.borderLeftWidth || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+          </div>
+
+          {/* Border Radius */}
+          <label>Border Radius (px):</label>
+          <div className="border-radius-inputs">
+            <label>
+              Top Left:
+              <input
+                type="number"
+                name="borderTopLeftRadius"
+                value={selectedItem.props.borderTopLeftRadius || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+            <label>
+              Top Right:
+              <input
+                type="number"
+                name="borderTopRightRadius"
+                value={selectedItem.props.borderTopRightRadius || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+            <label>
+              Bottom Right:
+              <input
+                type="number"
+                name="borderBottomRightRadius"
+                value={selectedItem.props.borderBottomRightRadius || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+            <label>
+              Bottom Left:
+              <input
+                type="number"
+                name="borderBottomLeftRadius"
+                value={selectedItem.props.borderBottomLeftRadius || 0}
+                onChange={handleChange}
+                min={0}
+              />
+            </label>
+          </div>
+        </div>
+      )}
+
+      {/* Layer Management */}
+      <div className="layer-management">
+        <button onClick={() => bringForward(selectedItem.id)}>
+          Bring Forward
+        </button>
+        <button onClick={() => sendBackward(selectedItem.id)}>
+          Send Backward
+        </button>
+      </div>
+
+      {/* Delete Item */}
+      <button
+        className="delete-button"
+        onClick={() => setShowDeleteConfirm(true)}
+      >
+        Delete Item
+      </button>
+
+      {showDeleteConfirm && (
+        <DeleteConfirmationModal
+          onClose={() => setShowDeleteConfirm(false)}
+          onConfirm={() => {
+            deleteItem(selectedItem.id);
+            setShowDeleteConfirm(false);
+          }}
+        />
+      )}
       {selectedItem.type === "text" && (
         <div className="text-configuration">
           {/* Edit Text */}
@@ -347,6 +497,45 @@ const ConfigurationPane = ({
         </div>
       )}
       {/* Configuration options for other item types... */}
+
+      {selectedItem.type === "counter" && (
+        <div className="counter-configuration">
+          {/* End Date */}
+          <label>End Date:</label>
+          <input
+            type="datetime-local"
+            name="endDate"
+            value={
+              selectedItem.props.endDate
+                ? new Date(parseInt(selectedItem.props.endDate))
+                    .toISOString()
+                    .slice(0, -1)
+                : ""
+            }
+            onChange={(e) =>
+              handleChange({
+                target: {
+                  name: "endDate",
+                  value: new Date(e.target.value).getTime(),
+                },
+              })
+            }
+          />
+
+          {/* Styling Options */}
+          {/* Include fontSize, color, fontWeight, etc., similar to the Text component */}
+          {/* Example: */}
+          <label>Font Size (px):</label>
+          <input
+            type="number"
+            name="fontSize"
+            value={selectedItem.props.fontSize || 16}
+            onChange={handleChange}
+            min={1}
+          />
+          {/* Add other styling options as needed */}
+        </div>
+      )}
     </div>
   );
 };

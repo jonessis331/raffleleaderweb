@@ -1,21 +1,21 @@
+// src/components/RulesPane.js
 import React from "react";
+import "../styles/Modals.css";
 
-const RulesPane = ({ startDate, endDate, setStartDate, setEndDate }) => {
+const RulesPane = ({ onClose, rulesText, setRulesText }) => {
   return (
-    <div className="rules-pane">
-      <h4>Rules Configuration</h4>
-      <label>Start Date:</label>
-      <input
-        type="datetime-local"
-        value={startDate ? new Date(startDate).toISOString().slice(0, -1) : ""}
-        onChange={(e) => setStartDate(new Date(e.target.value))}
-      />
-      <label>End Date:</label>
-      <input
-        type="datetime-local"
-        value={endDate ? new Date(endDate).toISOString().slice(0, -1) : ""}
-        onChange={(e) => setEndDate(new Date(e.target.value))}
-      />
+    <div className="modal-overlay">
+      <div className="modal-content rules-pane">
+        <h3>Terms and Rules</h3>
+        <textarea
+          rows={10}
+          value={rulesText}
+          onChange={(e) => setRulesText(e.target.value)}
+        ></textarea>
+        <div className="modal-buttons">
+          <button onClick={onClose}>Close</button>
+        </div>
+      </div>
     </div>
   );
 };

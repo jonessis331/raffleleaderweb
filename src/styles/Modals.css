@@ -1,0 +1,42 @@
+/* src/styles/Modals.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 1rem;
+  width: 500px;
+  max-width: 90%;
+  border-radius: 8px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.modal-buttons button {
+  margin-left: 0.5rem;
+}
+
+.rules-pane textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+}
