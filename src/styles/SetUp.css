@@ -1,26 +1,44 @@
 /* src/styles/SetUp.css */
+.setup-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f8f8; /* Off-white background */
+}
+
 .setup-container {
   display: flex;
-  justify-content: space-between;
-  padding: 1rem;
+  flex: 1;
+  margin-top: 180px; /* Navbar height + toolbar height */
+  overflow: hidden;
 }
 
 .layers-pane {
   width: 15%;
+  overflow-y: auto;
 }
 
-.canvas {
-  width: 55%;
-  /* ... other styles ... */
+.canvas-container {
+  /* flex: 1;
+  overflow: hidden;
+  position: relative;
+  background-color: #e0e0e0; Light gray background */
+
+  border: 3px solid blue;
+  width: 125%;
+  overflow: scroll;
 }
 
 .configuration-pane {
   width: 25%;
+  overflow-y: auto;
 }
 
-/* Adjust the toolbar to be horizontal */
-.customization-toolbar {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px; /* Adjust based on actual navbar height */
+  z-index: 1000; /* Higher z-index to stay on top */
 }

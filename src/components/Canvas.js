@@ -1,7 +1,7 @@
-// src/components/Canvas.js
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import CanvasItem from "./CanvasItem";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "../styles/Canvas.css";
 
 const Canvas = ({
@@ -12,51 +12,119 @@ const Canvas = ({
   raffleWidth,
   backgroundColor,
 }) => {
-  const [, drop] = useDrop(() => ({
-    accept: "item",
-    drop: (item, monitor) => {
-      const offset = monitor.getClientOffset();
-      const canvas = document.getElementById("canvas");
-      const canvasRect = canvas.getBoundingClientRect();
+  const [transformState, setTransformState] = useState({
+    scale: 1,
+    positionX: 0,
+    positionY: 0,
+  });
 
-      const x = offset.x - canvasRect.left;
-      const y = offset.y - canvasRect.top;
+  const canvasRef = useRef(null);
 
-      const newItem = {
-        id: `${item.type}-${Date.now()}`,
-        type: item.type,
-        x,
-        y,
-        width: 100,
-        height: 100,
-        zIndex: items.length, // New items are on top
-        props: getDefaultProps(item.type),
-      };
+  const [isItemDragging, setIsItemDragging] = useState(false);
 
-      setItems((prevItems) => [...prevItems, newItem]);
-    },
-  }));
+  const [, dropRef] = useDrop(
+    () => ({
+      accept: "item",
+      drop: (item, monitor) => {
+        const clientOffset = monitor.getClientOffset();
+        if (!clientOffset) return;
+
+        const canvasElement = canvasRef.current;
+        if (!canvasElement) return;
+
+        const canvasRect = canvasElement.getBoundingClientRect();
+
+        const { scale, positionX, positionY } = transformState;
+
+        // Calculate the position within the canvas
+        const xOnCanvas =
+          (clientOffset.x - canvasRect.left - positionX) / scale;
+        const yOnCanvas = (clientOffset.y - canvasRect.top - positionY) / scale;
+
+        const newItem = {
+          id: `${item.type}-${Date.now()}`,
+          type: item.type,
+          x: xOnCanvas,
+          y: yOnCanvas,
+          width: 100,
+          height: 100,
+          zIndex: items.length,
+          props: getDefaultProps(item.type),
+        };
+
+        setItems((prevItems) => [...prevItems, newItem]);
+      },
+    }),
+    [items, transformState]
+  );
 
   return (
-    <div
-      id="canvas"
-      ref={drop}
-      className="canvas"
-      style={{
-        width: `${raffleWidth}px`,
-        height: "600px",
-        backgroundColor,
-      }}
-    >
-      {items.map((item) => (
-        <CanvasItem
-          key={item.id}
-          item={item}
-          setItems={setItems}
-          setSelectedItem={setSelectedItem}
-          isSelected={selectedItem?.id === item.id}
-        />
-      ))}
+    <div className="canvas-scroll-container">
+      <div className="freeboard">
+        <TransformWrapper
+          wheel={{ step: 0.1 }}
+          panning={{ disabled: isItemDragging }}
+          doubleClick={{ disabled: true }}
+          minScale={0.1}
+          maxScale={2}
+          onZoomStop={(ref) => {
+            setTransformState(ref.state);
+          }}
+          onPanningStop={(ref) => {
+            setTransformState(ref.state);
+          }}
+        >
+          {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+            <>
+              {/* Zoom Controls */}
+              <div className="zoom-controls">
+                <button onClick={() => zoomIn()}>+</button>
+                <button onClick={() => zoomOut()}>-</button>
+                <button onClick={() => resetTransform()}>Reset</button>
+              </div>
+              <TransformComponent
+                wrapperStyle={{
+                  width: "100%",
+                  height: "100%",
+                }}
+                contentStyle={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  id="canvas"
+                  ref={(el) => {
+                    dropRef(el);
+                    canvasRef.current = el;
+                  }}
+                  className="canvas"
+                  style={{
+                    width: `${raffleWidth}px`,
+                    height: "800px",
+                    backgroundColor,
+                    position: "relative",
+                  }}
+                >
+                  {items.map((item) => (
+                    <CanvasItem
+                      key={item.id}
+                      item={item}
+                      setItems={setItems}
+                      setSelectedItem={setSelectedItem}
+                      isSelected={selectedItem?.id === item.id}
+                      setIsItemDragging={setIsItemDragging}
+                    />
+                  ))}
+                </div>
+              </TransformComponent>
+            </>
+          )}
+        </TransformWrapper>
+      </div>
     </div>
   );
 };

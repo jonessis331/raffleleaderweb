@@ -3,16 +3,32 @@ import React from "react";
 import { Rnd } from "react-rnd";
 import CounterDraggable from "./CounterDraggable";
 
-const CanvasItem = ({ item, setItems, setSelectedItem, isSelected }) => {
+const CanvasItem = ({
+  item,
+  setItems,
+  setSelectedItem,
+  isSelected,
+  setIsItemDragging,
+}) => {
   const { id, type, x, y, width, height, props } = item;
 
+  const onDragStart = () => {
+    setIsItemDragging(true);
+  };
+
   const onDragStop = (e, d) => {
+    setIsItemDragging(false);
     setItems((prevItems) =>
       prevItems.map((it) => (it.id === id ? { ...it, x: d.x, y: d.y } : it))
     );
   };
 
+  const onResizeStart = () => {
+    setIsItemDragging(true);
+  };
+
   const onResizeStop = (e, direction, ref, delta, position) => {
+    setIsItemDragging(false);
     setItems((prevItems) =>
       prevItems.map((it) =>
         it.id === id
@@ -32,12 +48,13 @@ const CanvasItem = ({ item, setItems, setSelectedItem, isSelected }) => {
     <Rnd
       size={{ width, height }}
       position={{ x, y }}
+      onDragStart={onDragStart}
       onDragStop={onDragStop}
+      onResizeStart={onResizeStart}
       onResizeStop={onResizeStop}
       bounds="parent"
       onClick={() => setSelectedItem(item)}
       style={{
-        //border: isSelected ? "2px dashed blue" : "none",
         zIndex: item.zIndex || 0,
       }}
     >
@@ -49,7 +66,7 @@ const CanvasItem = ({ item, setItems, setSelectedItem, isSelected }) => {
           boxSizing: "border-box",
           border: isSelected ? "2px dashed blue" : "none",
           borderRadius: `${props.borderRadius || 0}px`,
-          overflow: "hidden", // Ensure content respects the border radius
+          overflow: "hidden",
           pointerEvents: "auto",
         }}
       >

@@ -474,7 +474,10 @@ const ConfigurationPane = ({
                 })
               }
             >
-              Horizontal
+              <img
+                src="/assets/images/horizontal-orient.png"
+                alt="Horizontal"
+              />
             </button>
             <button
               className={
@@ -488,16 +491,16 @@ const ConfigurationPane = ({
                 })
               }
             >
-              Vertical
+              <img src="/assets/images/vertical-orient.png" alt="Vertical" />
             </button>
           </div>
           {/* Layer Management */}
           <div className="layer-management">
             <button onClick={() => bringForward(selectedItem.id)}>
-              Bring Forward
+              <img src="/assets/images/to-front.svg" alt="Bring Forward" />
             </button>
             <button onClick={() => sendBackward(selectedItem.id)}>
-              Send Backward
+              <img src="/assets/images/to-back.svg" alt="Send Backward" />
             </button>
           </div>
         </div>

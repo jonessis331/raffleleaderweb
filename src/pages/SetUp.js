@@ -57,11 +57,11 @@ const SetUp = () => {
     updateItems(items.filter((item) => item.id !== id));
     setSelectedItem(null);
   };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Delete" && selectedItem) {
-        // Show confirmation modal
-        // Assuming you have a function to handle this
+        // Show confirmation modal if needed
         deleteItem(selectedItem.id);
       }
     };
@@ -104,7 +104,7 @@ const SetUp = () => {
   };
 
   return (
-    <div>
+    <div className="setup-page">
       <Navbar />
       <CustomizationToolbar
         raffleWidth={raffleWidth}
@@ -127,15 +127,17 @@ const SetUp = () => {
           setSelectedItem={setSelectedItem}
           selectedItem={selectedItem}
         />
-        <Canvas
-          items={items}
-          setItems={setItems}
-          setSelectedItem={setSelectedItem}
-          selectedItem={selectedItem}
-          raffleWidth={raffleWidth}
-          backgroundColor={backgroundColor}
-          deleteItem={deleteItem}
-        />
+        <div className="canvas-container">
+          <Canvas
+            items={items}
+            setItems={setItems}
+            setSelectedItem={setSelectedItem}
+            selectedItem={selectedItem}
+            raffleWidth={raffleWidth}
+            backgroundColor={backgroundColor}
+            deleteItem={deleteItem}
+          />
+        </div>
         <ConfigurationPane
           selectedItem={selectedItem}
           updateItem={updateItem}
