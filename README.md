@@ -1,10 +1,7 @@
-# Getting Started with Create React App
+# Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repo extends the existing Raffle Leader WordPress plugin (https://github.com/wkflanders/raffle-leader-wordpress) by modernizing its front-end functionality using React. This repository integrates core giveaway and raffle features from the original plugin, while reworking user interface to deliver a standalone, responsive web application experience. 
 
-## Available Scripts
-
-In the project directory, you can run:
 
 ### `npm start`
 
